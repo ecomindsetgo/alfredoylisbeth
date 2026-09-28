@@ -14,10 +14,10 @@ const song = $("weddingSong"), musicButton = $("musicButton"), intro = $("intro"
 const guest = new URLSearchParams(location.search).get("para");
 if (guest) { $("forGuest").textContent = "Para " + guest; $("guestName").value = guest; }
 
-// Polvo dorado y perspectiva del sobre
-for (let i = 0; i < 26; i++) {
+// Pétalos cayendo y perspectiva del sobre
+for (let i = 0; i < 20; i++) {
   const p = document.createElement("span");
-  p.style.cssText = `left:${Math.random() * 100}%;--s:${2 + Math.random() * 4}px;--t:${9 + Math.random() * 10}s;--dl:${-Math.random() * 12}s`;
+  p.style.cssText = `left:${Math.random() * 100}%;--s:${7 + Math.random() * 7}px;--t:${12 + Math.random() * 10}s;--dl:${-Math.random() * 18}s;--x:${(Math.random() - .5) * 140}px`;
   $("dust").append(p);
 }
 addEventListener("pointermove", e => {
@@ -31,14 +31,13 @@ $("seal").addEventListener("click", () => {
   intro.classList.add("open");
   document.body.classList.add("opened");
   song.play().then(() => musicButton.classList.add("playing")).catch(() => {});
-  setTimeout(() => intro.classList.add("leaving"), 3000);
+  setTimeout(() => intro.classList.add("leaving"), 2900);
+  setTimeout(() => document.body.classList.add("ready"), 3100);
   setTimeout(() => {
-    intro.classList.add("gone");
     document.body.classList.remove("locked");
-    document.body.classList.add("ready");
     musicButton.classList.add("visible");
-  }, 4100);
-  setTimeout(() => intro.remove(), 5400);
+  }, 3900);
+  setTimeout(() => intro.remove(), 4800);
 });
 
 function toggleMusic() {

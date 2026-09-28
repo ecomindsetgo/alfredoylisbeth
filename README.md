@@ -34,3 +34,8 @@ No requiere Node.js para esta versión: es HTML + CSS + JavaScript puro.
 ## Versión 3
 - Edita `CONFIG` al inicio de `script.js`: lugar, dirección, búsqueda de Google Maps y tu WhatsApp (para recibir confirmaciones y canciones).
 - Fotos: dentro de cada `<div class="ph">` agrega `<img src="foto.jpg" alt="">`.
+
+## Versión 4
+- Sobre más claro y natural (papel marfil, pétalos cayendo), apertura en 3 tiempos: sello → solapa → carta sube y se disuelve hacia la portada.
+- Florales minimalistas en SVG (ramas, tulipanes, orquídeas, florecillas). Los colores se cambian en las variables `--leaf`, `--petal` en `style.css`.
+- Portada clara; adaptado a móviles (florales más pequeños en pantallas angostas).
