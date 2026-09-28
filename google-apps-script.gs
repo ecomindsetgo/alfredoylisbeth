@@ -9,11 +9,11 @@ function doPost(e) {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const fecha = Utilities.formatDate(new Date(), ZONA, "dd/MM/yyyy HH:mm:ss");
     if (p.tipo === "cancion") {
-      hoja(ss, "Canciones", ["Fecha", "Canción y artista", "Enviado por"])
-        .appendRow([fecha, limpio(p.cancion), limpio(p.invitado)]);
+      hoja(ss, "Canciones", ["Fecha", "Nombre", "Canción y artista"])
+        .appendRow([fecha, limpio(p.nombre), limpio(p.cancion)]);
     } else {
-      hoja(ss, "Confirmaciones", ["Fecha", "Nombre", "¿Asiste?", "Mensaje", "Enlace de invitado"])
-        .appendRow([fecha, limpio(p.nombre), limpio(p.asistencia), limpio(p.mensaje), limpio(p.invitado)]);
+      hoja(ss, "Confirmaciones", ["Fecha", "Nombre", "¿Asiste?", "Mensaje"])
+        .appendRow([fecha, limpio(p.nombre), limpio(p.asistencia), limpio(p.mensaje)]);
     }
     return salida({ ok: true });
   } catch (err) {

@@ -7,8 +7,8 @@ Por eso conectamos la invitación con una hoja de Google Sheets.
 
 ## Cómo queda funcionando
 Invitado llena el formulario → `script.js` lo envía → tu Google Apps Script → se agrega una fila en tu hoja.
-- Pestaña **Confirmaciones**: Fecha, Nombre, ¿Asiste?, Mensaje, Enlace de invitado
-- Pestaña **Canciones**: Fecha, Canción y artista, Enviado por
+- Pestaña **Confirmaciones**: Fecha, Nombre, ¿Asiste?, Mensaje
+- Pestaña **Canciones**: Fecha, Nombre, Canción y artista
 (Las pestañas se crean solas con el primer envío.)
 
 ## Pasos (10 minutos, gratis)
@@ -33,6 +33,14 @@ Invitado llena el formulario → `script.js` lo envía → tu Google Apps Script
 - El navegador no puede confirmar la respuesta de Google (es normal), así que revisa tu hoja en la primera prueba.
 - Si además quieres aviso por WhatsApp, avísame y lo agregamos.
 
+## Si ya habías creado la hoja con la versión anterior
+Las columnas cambiaron. Borra las pestañas "Confirmaciones" y "Canciones" (se recrean solas), pega el nuevo
+`google-apps-script.gs` y en Implementar → Administrar implementaciones → editar → **Nueva versión**.
+
 ## Lista de regalos
 Edita `ideas` y `pagos` al inicio de `script.js` (números de Yape/Plin, cuenta, CCI y titular).
 Los invitados tienen un botón "Copiar" en cada número.
+
+### QR de Yape y Plin
+Guarda las imágenes en la carpeta `qr/` con los nombres `yape.png` y `plin.png` (o cambia la ruta en `CONFIG.regalos`).
+Mientras no existan, se muestra un recuadro "QR por agregar".

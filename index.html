@@ -17,7 +17,7 @@
   <div class="botanical botanical-left" aria-hidden="true"><i class="leaf l1"></i><i class="leaf l2"></i><i class="leaf l3"></i><i class="leaf l4"></i><i class="tulip"></i><i class="orchid"><b></b><b></b><b></b></i></div>
   <div class="botanical botanical-right" aria-hidden="true"><i class="leaf l1"></i><i class="leaf l2"></i><i class="leaf l3"></i><i class="leaf l4"></i><i class="tulip"></i></div>
   <div class="dust" id="dust"></div>
-  <p class="for" id="forGuest">Hay una carta para ti</p>
+  <p class="for" id="forGuest">Hay una invitación para ti</p>
   <div class="env" id="env">
     <div class="card"><small>Con amor</small><b class="shine">A <em class="sc">&</em> L</b><span>28 · 11 · 2026</span></div>
     <div class="front"></div>
@@ -54,7 +54,7 @@
       <div class="tl">
         <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>01</small><h3>Nos encontramos</h3><p>Un día, sin planearlo, nuestros caminos se cruzaron. Lo que empezó con una charla sencilla se fue convirtiendo en costumbre, en risa y en hogar.</p></div></article>
         <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>02</small><h3>Aprendimos a ser equipo</h3><p>Entre días fáciles y otros no tanto, descubrimos que somos mejores cuando caminamos juntos.</p></div></article>
-        <article class="reveal kids"><div class="ph"><span>Foto de nuestros hijos</span></div><div><small>03</small><h3>Nuestros dos grandes amores</h3><p>Nuestros hijos llenaron la casa de ruido, abrazos y sueños. Son nuestro mayor orgullo y la razón por la que este día se siente todavía más grande.</p></div></article>
+        <article class="reveal kids"><div class="ph"><span>Foto de nuestros hijos</span></div><div><small>03</small><h3>Nuestros dos grandes amores</h3><p>Nuestros hijos llenan la casa de ruido, abrazos y sueños. Son nuestro mayor orgullo y la razón por la que este día se siente todavía más grande.</p></div></article>
         <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>04</small><h3>Ahora, el sí</h3><p>Después de todo lo vivido, queremos celebrarlo en familia, rodeados de quienes nos han acompañado en el camino.</p></div></article>
       </div>
     </div>
@@ -78,13 +78,23 @@
     <div class="in">
       <p class="eyebrow reveal">Cuándo y dónde</p>
       <h2 class="reveal">Cómo <em>llegar</em></h2>
-      <div class="when reveal">
-        <div><small>Ceremonia</small><h3>Hora por definir</h3></div>
-        <div><small>Recepción</small><h3>Hora por definir</h3></div>
-        <div><small>Lugar</small><h3 id="venueName">Lugar por definir</h3><p id="venueAddr">Dirección por definir</p></div>
+      <div class="where reveal">
+        <div class="wleft">
+          <div class="place">
+            <span class="pin-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span>
+            <div><small>Ceremonia &amp; Recepción</small><h3 id="venueName">Ciro's Eventos & Catering | Chimbote</h3><p id="venueAddr">Jirón José Olaya</p></div>
+          </div>
+          <div class="times">
+            <div><small>Ceremonia</small><h4 id="timeCer">Hora por definir</h4></div>
+            <div><small>Recepción</small><h4 id="timeRec">Hora por definir</h4></div>
+          </div>
+          <div class="btns"><a class="btn dk" id="gmaps" target="_blank" rel="noopener">Abrir en Google Maps</a><a class="btn dk" id="waze" target="_blank" rel="noopener">Cómo llegar con Waze</a></div>
+        </div>
+        <div class="wright">
+          <div class="map"><iframe id="mapFrame" title="Mapa del lugar" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+          <div class="mapnote"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg><span>Guarda la ubicación para tenerla a mano el gran día.</span></div>
+        </div>
       </div>
-      <div class="map reveal"><iframe id="mapFrame" title="Mapa del lugar" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
-      <div class="btns reveal"><a class="btn fill" id="gmaps" target="_blank" rel="noopener">Abrir en Google Maps</a><a class="btn dk" id="waze" target="_blank" rel="noopener">Ir con Waze</a></div>
     </div>
   </section>
 
@@ -114,12 +124,11 @@
 
   <section class="sec" id="regalos">
     <div class="in reveal">
-      <p class="eyebrow">Lista de regalos</p>
-      <h2>Tu presencia es<br><em>nuestro mejor regalo</em></h2>
-      <p>Si además quieres tener un detalle con nosotros, estas ideas nos harían muy felices. Lo que elijas lo recibiremos con todo el cariño.</p>
-      <div class="ideas" id="giftIdeas"></div>
-      <h3 class="paytitle">Si prefieres hacer un aporte</h3>
-      <div class="pays" id="giftPays"></div>
+      <p class="eyebrow">Con cariño</p>
+      <h2>Lista de <em>regalos</em></h2>
+      <p>Lo más importante es compartir este día contigo. Si deseas tener un detalle con nosotros, aquí encontrarás algunas ideas y nuestras opciones de aporte.</p>
+      <div class="gifts" id="gifts"></div>
+      <p class="thanks">Gracias por acompañarnos con tanto cariño. ♥</p>
     </div>
   </section>
 
@@ -131,6 +140,7 @@
       <button class="btn dk" id="playSong">▶ Escuchar</button>
       <p class="mt">¿Qué canción te hace mover los pies? Cuéntanos y la sumamos a la lista.</p>
       <form id="songForm" class="form row">
+        <input type="text" id="songFrom" required placeholder="Tu nombre">
         <input type="text" id="songName" required placeholder="Canción y artista">
         <button type="submit" class="btn dk">Sugerir</button>
       </form>
