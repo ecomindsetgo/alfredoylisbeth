@@ -1,10 +1,10 @@
 // ===== EDITA AQUÍ =====
 const CONFIG = {
   fecha: "2026-11-28T17:00:00-05:00",
-  lugar: "Lugar por definir",
-  direccion: "Dirección por definir",
-  busqueda: "Ica, Perú",      // dirección exacta o nombre del local tal como sale en Google Maps
-  sheetsUrl: "",              // URL de tu Google Apps Script (ver GUIA-GOOGLE-SHEETS.md) → confirmaciones y canciones a tu Excel
+  lugar: "Ciro's Eventos & Catering | Chimbote",
+  direccion: "Jirón José Olaya",
+  busqueda: "Ciro'S",      // dirección exacta o nombre del local tal como sale en Google Maps
+  sheetsUrl: "https://script.google.com/macros/s/AKfycbyvlMoZZkwQoJ1egHAFs4NRcOQnC5MjbkyQlWUkEDVEMKphiNkscs6amVOJewmgwVk/exec",              // URL de tu Google Apps Script (ver GUIA-GOOGLE-SHEETS.md) → confirmaciones y canciones a tu Excel
   whatsapp: "",               // opcional, ej: "51999999999" (solo se usa si NO configuras sheetsUrl)
 
   horaCeremonia: "Hora por definir",
