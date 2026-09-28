@@ -56,3 +56,18 @@ No requiere Node.js para esta versión: es HTML + CSS + JavaScript puro.
 - **Programa del día** en línea de tiempo. Opcionales en `CONFIG`: `horaLlegada` (agrega «Llegada de invitados») y `limiteConfirmar` (muestra «confirma antes del …»).
 - **Tarjeta «¡Gracias por confirmar!»** al enviar la confirmación.
 - **Google Sheets más fiable**: confirmaciones y canciones se guardan con ID único (sin duplicados), con el enlace del invitado (`?para=`) y reintento automático si no hay internet. Hay que pegar el nuevo `google-apps-script.gs` y publicar una nueva versión (ver `GUIA-GOOGLE-SHEETS.md`).
+
+
+## Fotos de Nuestra Historia
+
+Las cuatro fotos de la sección **Nuestra historia** están en la carpeta `fotos/`:
+
+```text
+fotos/
+├── historia-01.jpg
+├── historia-02.jpg
+├── historia-03.jpg
+└── historia-04.jpg
+```
+
+Para colocar tus fotos, reemplaza esos cuatro archivos manteniendo exactamente los mismos nombres. No necesitas modificar `index.html`.
