@@ -36,6 +36,6 @@ No requiere Node.js para esta versión: es HTML + CSS + JavaScript puro.
 - Fotos: dentro de cada `<div class="ph">` agrega `<img src="foto.jpg" alt="">`.
 
 ## Versión 4
-- Sobre más claro y natural (papel marfil, pétalos cayendo), apertura en 3 tiempos: sello → solapa → carta sube y se disuelve hacia la portada.
-- Florales minimalistas en SVG (ramas, tulipanes, orquídeas, florecillas). Los colores se cambian en las variables `--leaf`, `--petal` en `style.css`.
-- Portada clara; adaptado a móviles (florales más pequeños en pantallas angostas).
+- Nueva sección **Lista de regalos** (ideas + Yape/Plin/cuenta con botón copiar): se edita en `CONFIG` de `script.js`.
+- Confirmaciones y canciones se guardan en Google Sheets: ver `GUIA-GOOGLE-SHEETS.md` y `google-apps-script.gs`.
+- Apertura del sobre más rápida, mapa rediseñado, cuenta regresiva con números legibles, paleta de vestimenta en una fila en móvil.
