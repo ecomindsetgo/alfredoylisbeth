@@ -9,6 +9,8 @@ const CONFIG = {
 
   horaCeremonia: "Hora por definir",
   horaRecepcion: "Hora por definir",
+  horaLlegada: "",            // opcional, ej: "3:00 p. m." (vacío = no se muestra)
+  limiteConfirmar: "",        // opcional, ej: "14 de noviembre" (vacío = no se muestra)
 
   // ---- LISTA DE REGALOS: edita libremente ----
   regalos: {
@@ -26,33 +28,94 @@ const song = $("weddingSong"), musicButton = $("musicButton"), intro = $("intro"
 const guest = new URLSearchParams(location.search).get("para");
 if (guest) { $("forGuest").textContent = "Para " + guest; $("guestName").value = guest; $("songFrom").value = guest; }
 
-// Polvo dorado y perspectiva del sobre
-for (let i = 0; i < 26; i++) {
-  const p = document.createElement("span");
-  p.style.cssText = `left:${Math.random() * 100}%;--s:${2 + Math.random() * 4}px;--t:${9 + Math.random() * 10}s;--dl:${-Math.random() * 12}s`;
-  $("dust").append(p);
+// ===== Ramas dibujadas con SVG (arco de apertura y esquinas del hero) =====
+const NS = "http://www.w3.org/2000/svg";
+function S(tag, attrs, parent) {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.append(n);
+  return n;
 }
-addEventListener("pointermove", e => {
-  if (!intro.isConnected) return;
-  $("env").style.setProperty("--ry", (e.clientX / innerWidth - .5) * 12 + "deg");
-  $("env").style.setProperty("--rx", (.5 - e.clientY / innerHeight) * 9 + "deg");
-});
+const bez = (p, t) => { const u = 1 - t; return [0, 1].map(i => u*u*u*p[0][i] + 3*u*u*t*p[1][i] + 3*u*t*t*p[2][i] + t*t*t*p[3][i]); };
+const ang = (p, t) => { const u = 1 - t; const d = [0, 1].map(i => 3*u*u*(p[1][i]-p[0][i]) + 6*u*t*(p[2][i]-p[1][i]) + 3*t*t*(p[3][i]-p[2][i])); return Math.atan2(d[1], d[0]) * 180 / Math.PI; };
+// pts: 4 puntos de una curva; n: hojas; size: largo de hoja; delay: segundos antes de empezar a dibujarse
+function sprig(svg, { pts, n, size, delay }) {
+  const g = S("g", {}, svg);
+  S("path", { class: "stem", pathLength: 1, d: `M${pts[0]} C${pts[1]} ${pts[2]} ${pts[3]}`, style: `--d:${delay}s` }, g);
+  for (let i = 0; i < n; i++) {
+    const t = .16 + (i / (n - 1)) * .84, [x, y] = bez(pts, t);
+    const a = ang(pts, t) + (i === n - 1 ? 0 : (i % 2 ? 52 : -52));
+    const L = size * (1 - .4 * t), W = L * .34, d = (delay + .5 + t * 1.5).toFixed(2);
+    const leaf = S("g", { transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${a.toFixed(1)})` }, g);
+    S("path", { class: "leaf", pathLength: 1, d: `M0 0C${L*.3} ${-W} ${L*.72} ${-W} ${L} 0C${L*.72} ${W} ${L*.3} ${W} 0 0Z`, style: `--d:${d}s` }, leaf);
+    S("path", { class: "vein", pathLength: 1, d: `M0 0L${(L*.85).toFixed(1)} 0`, style: `--d:${d}s` }, leaf);
+    if (i % 3 === 2 && i < n - 1) {
+      const b = a > 0 ? -1 : 1, r = (a + 90 * b) * Math.PI / 180;
+      S("circle", { class: "berry", r: 2.6, cx: (x + Math.cos(r) * 11).toFixed(1), cy: (y + Math.sin(r) * 11).toFixed(1), style: `--d:${(+d + 1.2).toFixed(2)}s` }, g);
+    }
+  }
+}
+// Anillos (coordenadas centradas en 0,0; se reutilizan en apertura, portada, confirmación y cierre)
+const RINGS = `
+<circle class="ring" pathLength="1" cx="-17" cy="0" r="25" style="--d:calc(var(--rd,0s) + 0s)"/>
+<circle class="ring r2" pathLength="1" cx="-17" cy="0" r="21.5" style="--d:calc(var(--rd,0s) + .25s)"/>
+<circle class="ring" pathLength="1" cx="17" cy="0" r="25" style="--d:calc(var(--rd,0s) + .5s)"/>
+<circle class="ring r2" pathLength="1" cx="17" cy="0" r="21.5" style="--d:calc(var(--rd,0s) + .75s)"/>
+<path class="ring" pathLength="1" d="M17 -35L22 -28L17 -21L12 -28Z" style="--d:calc(var(--rd,0s) + 1.3s)"/>
+<path class="ring r2" pathLength="1" d="M12 -28H22" style="--d:calc(var(--rd,0s) + 1.6s)"/>
+<path class="spark" d="M29 -37l1.3 3.4 3.4 1.3-3.4 1.3-1.3 3.4-1.3-3.4-3.4-1.3 3.4-1.3z" style="--d:calc(var(--rd,0s) + 1.3s)"/>`;
+document.querySelectorAll("[data-rings]").forEach(svg => { svg.innerHTML = RINGS; svg.style.setProperty("--rd", ".2s"); });
 
-// Sello → sobre → invitación (tiempos cortos: la invitación aparece mientras el sobre se desvanece)
-$("seal").addEventListener("click", () => {
+// Arco de apertura: anillos + ramas
+const frameSvg = $("frameSvg");
+const ringsG = S("g", { transform: "translate(200 215) scale(1.25)", style: "--rd:1.1s" }, frameSvg);
+ringsG.innerHTML = RINGS;
+sprig(frameSvg, { pts: [[52,552],[10,430],[74,300],[44,150]], n: 8, size: 32, delay: .5 });
+sprig(frameSvg, { pts: [[350,552],[392,450],[330,330],[362,235]], n: 6, size: 28, delay: .8 });
+// Esquinas de la portada (se dibujan al abrir)
+sprig($("heroL"), { pts: [[70,420],[35,320],[110,220],[80,80]], n: 7, size: 30, delay: .2 });
+sprig($("heroR"), { pts: [[230,0],[265,100],[190,200],[220,330]], n: 6, size: 28, delay: .5 });
+requestAnimationFrame(() => frameSvg.classList.add("go"));
+
+// Polen sutil
+function pollen(box, n) {
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement("span");
+    p.style.cssText = `left:${Math.random() * 100}%;--s:${2 + Math.random() * 4}px;--t:${12 + Math.random() * 12}s;--dl:${-Math.random() * 14}s`;
+    box.append(p);
+  }
+}
+pollen($("pollen"), 18);
+pollen($("heroPollen"), 14);
+
+// Abrir: el marco se desvanece y el papel sube revelando la invitación
+$("openBtn").addEventListener("click", () => {
   intro.classList.add("open");
-  document.body.classList.add("opened");
   song.play().then(() => musicButton.classList.add("playing")).catch(() => {});
-  setTimeout(() => intro.classList.add("leaving"), 1400);
   setTimeout(() => {
+    intro.classList.add("leaving");
     scrollTo(0, 0);
     document.body.classList.remove("locked");
     document.body.classList.add("ready");
-    intro.classList.add("gone");
+    document.querySelectorAll(".hs, .hero .rings").forEach(s => s.classList.add("go"));
     musicButton.classList.add("visible");
-  }, 2000);
-  setTimeout(() => intro.remove(), 4000);
+  }, 700);
+  setTimeout(() => intro.remove(), 2200);
 });
+
+// Parallax suave solo en las ramas; "desliza" desaparece al bajar (ya no puede tapar la fecha)
+const hs = [...document.querySelectorAll(".hs")], hint = $("scrollHint");
+let ticking = false;
+addEventListener("scroll", () => {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    const y = Math.min(scrollY, innerHeight);
+    hs.forEach((el, i) => el.style.transform = `translate3d(0,${y * (i ? -.08 : .1)}px,0)`);
+    hint.classList.toggle("gone", scrollY > 30);
+    ticking = false;
+  });
+}, { passive: true });
 
 function toggleMusic() {
   if (song.paused) song.play().then(() => musicButton.classList.add("playing")).catch(() => alert("Agrega tu audio en music/besame.mp3"));
@@ -67,6 +130,8 @@ $("venueName").textContent = CONFIG.lugar;
 $("venueAddr").textContent = CONFIG.direccion;
 $("timeCer").textContent = CONFIG.horaCeremonia;
 $("timeRec").textContent = CONFIG.horaRecepcion;
+if (CONFIG.horaLlegada) { $("timeLle").textContent = CONFIG.horaLlegada; $("itLlegada").hidden = false; }
+if (CONFIG.limiteConfirmar) { $("rsvpDeadline").textContent = "Por favor, confirma antes del " + CONFIG.limiteConfirmar; $("rsvpDeadline").hidden = false; }
 $("mapFrame").src = `https://maps.google.com/maps?q=${q}&output=embed`;
 $("gmaps").href = `https://www.google.com/maps/search/?api=1&query=${q}`;
 $("waze").href = `https://waze.com/ul?q=${q}&navigate=yes`;
@@ -123,20 +188,33 @@ const io = new IntersectionObserver(es => es.forEach(e => {
 }), { threshold: .12 });
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
-// Envío: Google Sheets (recomendado) → si no está configurado, WhatsApp; siempre queda copia en este dispositivo
+// ===== Envío a Google Sheets =====
+// Cada envío lleva un ID único: si hay que reintentarlo, el Apps Script no duplica la fila.
+const LS = {
+  get: k => { try { return JSON.parse(localStorage.getItem(k) || "[]"); } catch { return []; } },
+  set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const post = item => fetch(CONFIG.sheetsUrl, { method: "POST", mode: "no-cors", body: new URLSearchParams(item) });
+async function flushPending() {
+  if (!CONFIG.sheetsUrl || !navigator.onLine) return;
+  const rest = [];
+  for (const it of LS.get("wedding_pending")) { try { await post(it); } catch { rest.push(it); } }
+  LS.set("wedding_pending", rest);
+}
+addEventListener("online", flushPending);
+flushPending();
+
+// Guarda copia local, envía a Sheets (o WhatsApp si no hay Sheets). Si no hay conexión, queda en cola y se reintenta sola.
 async function send(tipo, data, text) {
   const key = tipo === "cancion" ? "wedding_songs" : "wedding_rsvp";
-  try {
-    const list = JSON.parse(localStorage.getItem(key) || "[]");
-    list.push({ ...data, date: new Date().toISOString() });
-    localStorage.setItem(key, JSON.stringify(list));
-  } catch {}
+  LS.set(key, [...LS.get(key), { ...data, date: new Date().toISOString() }]);
   if (CONFIG.sheetsUrl) {
-    try { await fetch(CONFIG.sheetsUrl, { method: "POST", mode: "no-cors", body: new URLSearchParams({ tipo, ...data }) }); }
-    catch { return false; }
-  } else if (CONFIG.whatsapp) {
-    open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`, "_blank");
+    const item = { tipo, ...data, invitado: guest || "", id: uid() };
+    try { await post(item); return true; }
+    catch { LS.set("wedding_pending", [...LS.get("wedding_pending"), item]); return false; }
   }
+  if (CONFIG.whatsapp) open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`, "_blank");
   return true;
 }
 $("rsvpForm").addEventListener("submit", async e => {
@@ -148,9 +226,13 @@ $("rsvpForm").addEventListener("submit", async e => {
   const ok = await send("asistencia", { nombre: name, asistencia: attendance === "si" ? "Sí" : "No", mensaje: message },
     `Hola, soy ${name}. ${attendance === "si" ? "¡Confirmo mi asistencia!" : "Lamentablemente no podré asistir."} ${message}`);
   btn.disabled = false;
-  if (!ok) { $("formNote").textContent = "No pudimos enviar tu respuesta. Revisa tu conexión e inténtalo otra vez."; return; }
-  $("formNote").textContent = attendance === "si" ? `¡Qué alegría, ${name}! Nos vemos el 28 de noviembre.` : `Gracias por avisarnos, ${name}. Te llevaremos en el corazón.`;
-  form.reset();
+  if (!ok) { $("formNote").textContent = "No pudimos enviar tu respuesta ahora. La guardamos y se reenviará sola cuando recuperes la conexión."; return; }
+  const yes = attendance === "si";
+  $("doneTitle").textContent = yes ? "¡Gracias por confirmar!" : "Gracias por avisarnos";
+  $("doneText").textContent = yes ? `${name}, nos vemos el 28 de noviembre. Estamos felices de compartir este día contigo.` : `${name}, te llevaremos en el corazón. Gracias por tu cariño.`;
+  form.reset(); $("formNote").textContent = "";
+  form.hidden = true; $("rsvpDone").hidden = false;
+  $("rsvpDone").querySelector(".rings").classList.add("go");
 });
 $("songForm").addEventListener("submit", async e => {
   e.preventDefault();
@@ -160,6 +242,6 @@ $("songForm").addEventListener("submit", async e => {
   btn.disabled = true;
   const ok = await send("cancion", { nombre: from, cancion: s }, `Sugerencia de canción de ${from}: ${s}`);
   btn.disabled = false;
-  $("songNote").textContent = ok ? "¡Anotada! La ponemos en la lista." : "No pudimos enviarla. Inténtalo otra vez.";
+  $("songNote").textContent = ok ? "¡Anotada! La ponemos en la lista." : "No pudimos enviarla ahora. Queda guardada y se reenviará sola al volver la conexión.";
   if (ok) form.reset();
 });

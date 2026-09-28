@@ -3,42 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#5a4032">
+<meta name="theme-color" content="#fbf8f2">
 <meta name="description" content="Alfredo & Lisbeth — 28 de noviembre de 2026. Te invitamos a celebrar con nosotros.">
 <title>Alfredo & Lisbeth · 28.11.2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Italiana&family=Jost:wght@300;400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="locked">
 
+<!-- Apertura: arco, anillos y ramas que se dibujan solos -->
 <div class="intro" id="intro">
-  <div class="botanical botanical-left" aria-hidden="true"><i class="leaf l1"></i><i class="leaf l2"></i><i class="leaf l3"></i><i class="leaf l4"></i><i class="tulip"></i><i class="orchid"><b></b><b></b><b></b></i></div>
-  <div class="botanical botanical-right" aria-hidden="true"><i class="leaf l1"></i><i class="leaf l2"></i><i class="leaf l3"></i><i class="leaf l4"></i><i class="tulip"></i></div>
-  <div class="dust" id="dust"></div>
-  <p class="for" id="forGuest">Hay una invitación para ti</p>
-  <div class="env" id="env">
-    <div class="card"><small>Con amor</small><b class="shine">A <em class="sc">&</em> L</b><span>28 · 11 · 2026</span></div>
-    <div class="front"></div>
-    <div class="flap"></div>
-    <button class="seal" id="seal" aria-label="Abrir invitación"><span class="a"><b>A&L</b></span><span class="b"><b>A&L</b></span></button>
+  <div class="pollen" id="pollen"></div>
+  <p class="for in-rise" id="forGuest" style="--d:.4s">Hay una invitación para ti</p>
+  <div class="frame" id="frame">
+    <svg id="frameSvg" viewBox="0 0 400 560" aria-hidden="true">
+      <path class="arch" pathLength="1" d="M70 552V210a130 130 0 0 1 260 0V552"/>
+      <path class="arch arch2" pathLength="1" d="M86 552V212a114 114 0 0 1 228 0V552"/>
+    </svg>
+    <div class="names in-rise" style="--d:2.4s">
+      <small>Con amor</small>
+      <b>A <em>&</em> L</b>
+      <span>28 · 11 · 2026</span>
+    </div>
   </div>
-  <p class="tap">Toca el sello para abrir</p>
+  <button class="open-btn in-rise" id="openBtn" style="--d:3.1s" type="button">Abrir invitación</button>
 </div>
 
 <button class="music-button" id="musicButton" aria-label="Música">♪</button>
 <audio id="weddingSong" loop preload="none"><source src="music/besame.mp3" type="audio/mpeg"></audio>
 
 <main>
-  <section class="hero cocoa">
-    <p class="eyebrow rise" style="--d:1">Con el corazón feliz, te invitamos</p>
-    <h1 class="rise" style="--d:2">Alfredo<em class="sc">&</em>Lisbeth</h1>
-    <p class="hdate rise" style="--d:4"><span></span>28 · 11 · 2026<span></span></p>
-    <div class="scroll rise" style="--d:6">desliza</div>
+  <!-- Portada -->
+  <section class="hero">
+    <div class="pollen" id="heroPollen"></div>
+    <svg class="hs hs-l" id="heroL" viewBox="0 0 300 420" aria-hidden="true"></svg>
+    <svg class="hs hs-r" id="heroR" viewBox="0 0 300 420" aria-hidden="true"></svg>
+    <div class="hc">
+      <svg class="rings rise" data-rings viewBox="-45 -42 90 72" aria-hidden="true" style="--d:0"></svg>
+      <p class="eyebrow rise" style="--d:1">Con el corazón feliz, te invitamos</p>
+      <h1 class="rise" style="--d:2">Alfredo<em class="sc">&</em>Lisbeth</h1>
+      <p class="hdate rise" style="--d:4"><span></span>28 · 11 · 2026<span></span></p>
+    </div>
+    <div class="scroll rise" id="scrollHint" style="--d:6">desliza</div>
   </section>
 
-  <section class="sec">
+  <!-- Mensaje -->
+  <section class="sec" id="mensaje">
     <div class="in narrow reveal">
       <p class="eyebrow">Una noticia bonita</p>
       <h2>Este día <em>también es tuyo</em></h2>
@@ -47,20 +59,8 @@
     </div>
   </section>
 
-  <section class="sec cream">
-    <div class="in">
-      <p class="eyebrow reveal">Nuestra historia</p>
-      <h2 class="reveal">Un camino <em>en familia</em></h2>
-      <div class="tl">
-        <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>01</small><h3>Nos encontramos</h3><p>Un día, sin planearlo, nuestros caminos se cruzaron. Lo que empezó con una charla sencilla se fue convirtiendo en costumbre, en risa y en hogar.</p></div></article>
-        <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>02</small><h3>Aprendimos a ser equipo</h3><p>Entre días fáciles y otros no tanto, descubrimos que somos mejores cuando caminamos juntos.</p></div></article>
-        <article class="reveal kids"><div class="ph"><span>Foto de nuestros hijos</span></div><div><small>03</small><h3>Nuestros dos grandes amores</h3><p>Nuestros hijos llenan la casa de ruido, abrazos y sueños. Son nuestro mayor orgullo y la razón por la que este día se siente todavía más grande.</p></div></article>
-        <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>04</small><h3>Ahora, el sí</h3><p>Después de todo lo vivido, queremos celebrarlo en familia, rodeados de quienes nos han acompañado en el camino.</p></div></article>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec olive">
+  <!-- Cuenta regresiva -->
+  <section class="sec sage-p" id="cuenta">
     <div class="in reveal">
       <p class="eyebrow">Falta poco</p>
       <h2>Cada amanecer nos acerca<br>a nuestro <em>sí</em></h2>
@@ -74,21 +74,23 @@
     </div>
   </section>
 
-  <section class="sec">
+  <!-- El gran día: programa + lugar + mapa -->
+  <section class="sec paper" id="dia">
     <div class="in">
-      <p class="eyebrow reveal">Cuándo y dónde</p>
-      <h2 class="reveal">Cómo <em>llegar</em></h2>
+      <p class="eyebrow reveal">El gran día</p>
+      <h2 class="reveal">Cuándo y <em>dónde</em></h2>
       <div class="where reveal">
         <div class="wleft">
+          <ol class="itin">
+            <li id="itLlegada" hidden><time id="timeLle"></time><h4>Llegada de invitados</h4><p>Los esperamos con tiempo para comenzar juntos este día.</p></li>
+            <li><time id="timeCer">Hora por definir</time><h4>Ceremonia</h4><p>El momento en que diremos nuestro «sí».</p></li>
+            <li><time id="timeRec">Hora por definir</time><h4>Recepción</h4><p>Ahora sí, a brindar, cenar y bailar.</p></li>
+          </ol>
           <div class="place">
             <span class="pin-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span>
             <div><small>Ceremonia &amp; Recepción</small><h3 id="venueName"> Ciro's Eventos & Catering | Chimbote </h3><p id="venueAddr"> Jirón José Olaya </p></div>
           </div>
-          <div class="times">
-            <div><small>Ceremonia</small><h4 id="timeCer">Hora por definir</h4></div>
-            <div><small>Recepción</small><h4 id="timeRec">Hora por definir</h4></div>
-          </div>
-          <div class="btns"><a class="btn dk" id="gmaps" target="_blank" rel="noopener">Abrir en Google Maps</a><a class="btn dk" id="waze" target="_blank" rel="noopener">Cómo llegar con Waze</a></div>
+          <div class="btns"><a class="btn" id="gmaps" target="_blank" rel="noopener">Abrir en Google Maps</a><a class="btn" id="waze" target="_blank" rel="noopener">Cómo llegar con Waze</a></div>
         </div>
         <div class="wright">
           <div class="map"><iframe id="mapFrame" title="Mapa del lugar" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
@@ -98,7 +100,8 @@
     </div>
   </section>
 
-  <section class="sec blush">
+  <!-- Código de vestimenta -->
+  <section class="sec sand" id="vestimenta">
     <div class="in narrow">
       <p class="eyebrow reveal">Código de vestimenta</p>
       <h2 class="reveal sc big">Elegante</h2>
@@ -114,14 +117,56 @@
     </div>
   </section>
 
-  <section class="sec terra">
+  <!-- Información importante -->
+  <section class="sec compact" id="adultos">
     <div class="in narrow reveal">
-      <p class="eyebrow">Para disfrutar sin pendientes</p>
+      <p class="eyebrow">Información importante</p>
       <h2>Celebración <em>solo para adultos</em></h2>
       <p>Queremos que esta noche sea para brindar, conversar y bailar sin prisa. Por eso la fiesta será únicamente para adultos. Gracias por entenderlo con cariño.</p>
     </div>
   </section>
 
+  <!-- Confirmación -->
+  <section class="sec blush" id="rsvp">
+    <div class="in narrow reveal">
+      <p class="eyebrow">Confirma tu asistencia</p>
+      <h2>¿Brindamos <em>juntos?</em></h2>
+      <p>Tu respuesta nos ayuda a preparar cada detalle con cariño.</p>
+      <p class="deadline" id="rsvpDeadline" hidden></p>
+      <form id="rsvpForm" class="form">
+        <input type="text" id="guestName" required placeholder="Nombre completo">
+        <select id="attendance" required>
+          <option value="">¿Podrás acompañarnos?</option>
+          <option value="si">Sí, allí estaré</option>
+          <option value="no">No podré esta vez</option>
+        </select>
+        <textarea id="guestMessage" rows="2" placeholder="Un mensaje para nosotros (opcional)"></textarea>
+        <button type="submit" class="btn fill">Confirmar</button>
+        <p class="note" id="formNote"></p>
+      </form>
+      <div class="done" id="rsvpDone" hidden>
+        <svg class="rings" data-rings viewBox="-45 -42 90 72" aria-hidden="true"></svg>
+        <h3 id="doneTitle"></h3>
+        <p id="doneText"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nuestra historia -->
+  <section class="sec paper" id="historia">
+    <div class="in">
+      <p class="eyebrow reveal">Nuestra historia</p>
+      <h2 class="reveal">Un camino <em>en familia</em></h2>
+      <div class="tl">
+        <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>01</small><h3>Nos encontramos</h3><p>Un día, sin planearlo, nuestros caminos se cruzaron. Lo que empezó con una charla sencilla se fue convirtiendo en costumbre, en risa y en hogar.</p></div></article>
+        <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>02</small><h3>Aprendimos a ser equipo</h3><p>Entre días fáciles y otros no tanto, descubrimos que somos mejores cuando caminamos juntos.</p></div></article>
+        <article class="reveal kids"><div class="ph"><span>Foto de nuestros hijos</span></div><div><small>03</small><h3>Nuestros dos grandes amores</h3><p>Nuestros hijos llenan la casa de ruido, abrazos y sueños. Son nuestro mayor orgullo y la razón por la que este día se siente todavía más grande.</p></div></article>
+        <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>04</small><h3>Ahora, el sí</h3><p>Después de todo lo vivido, queremos celebrarlo en familia, rodeados de quienes nos han acompañado en el camino.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lista de regalos -->
   <section class="sec" id="regalos">
     <div class="in reveal">
       <p class="eyebrow">Con cariño</p>
@@ -132,46 +177,31 @@
     </div>
   </section>
 
-  <section class="sec cream">
+  <!-- Música -->
+  <section class="sec sand" id="musica">
     <div class="in narrow reveal">
       <p class="eyebrow">Nuestra canción favorita</p>
       <h2>Bésame</h2>
       <p>Ricardo Montaner</p>
-      <button class="btn dk" id="playSong">▶ Escuchar</button>
+      <button class="btn" id="playSong" type="button">▶ Escuchar</button>
       <p class="mt">¿Qué canción te hace mover los pies? Cuéntanos y la sumamos a la lista.</p>
       <form id="songForm" class="form row">
         <input type="text" id="songFrom" required placeholder="Tu nombre">
         <input type="text" id="songName" required placeholder="Canción y artista">
-        <button type="submit" class="btn dk">Sugerir</button>
+        <button type="submit" class="btn fill">Sugerir</button>
       </form>
       <p class="note" id="songNote"></p>
     </div>
   </section>
 
-  <section class="sec" id="rsvp">
-    <div class="in narrow reveal">
-      <p class="eyebrow">Confirma tu asistencia</p>
-      <h2>¿Brindamos <em>juntos?</em></h2>
-      <p>Tu respuesta nos ayuda a preparar cada detalle con cariño.</p>
-      <form id="rsvpForm" class="form">
-        <input type="text" id="guestName" required placeholder="Nombre completo">
-        <select id="attendance" required>
-          <option value="">¿Podrás acompañarnos?</option>
-          <option value="si">Sí, allí estaré</option>
-          <option value="no">No podré esta vez</option>
-        </select>
-        <textarea id="guestMessage" rows="2" placeholder="Un mensaje para nosotros (opcional)"></textarea>
-        <button type="submit" class="btn dk">Confirmar</button>
-        <p class="note" id="formNote"></p>
-      </form>
-    </div>
-  </section>
-
-  <section class="final cocoa">
+  <!-- Cierre -->
+  <section class="final blush">
     <div class="in reveal">
+      <svg class="rings" data-rings viewBox="-45 -42 90 72" aria-hidden="true"></svg>
       <p class="eyebrow">Gracias por ser parte de nuestra historia</p>
       <h2>Contigo,<br><em>todo es más bonito.</em></h2>
       <p class="hdate"><span></span>Alfredo & Lisbeth<span></span></p>
+      <a class="btn fill" href="#rsvp">Confirmar asistencia</a>
     </div>
   </section>
 </main>
