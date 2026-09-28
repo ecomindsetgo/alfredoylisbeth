@@ -106,16 +106,13 @@ small{font-size:.68rem;letter-spacing:.34em;text-transform:uppercase;color:var(-
 
 .where{display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(1.5rem,4vw,3.2rem);margin-top:3rem;align-items:start;text-align:left}
 .wleft{display:flex;flex-direction:column;gap:2rem}
-.itin{list-style:none;position:relative;padding-left:1.7rem}
-.itin::before{content:"";position:absolute;left:5px;top:.6rem;bottom:1.4rem;width:1px;background:var(--line-d)}
-.itin li{position:relative;padding:0 0 1.5rem}
-.itin li::before{content:"";position:absolute;left:-1.7rem;top:.5rem;width:11px;height:11px;border-radius:50%;background:var(--paper);border:1px solid var(--gold)}
-.itin time{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--olive-t)}
-.itin h4{font:400 1.6rem var(--disp);margin:.1rem 0 .15rem}
-.itin p{margin:0;font-size:.95rem}
-.place{display:flex;gap:1.1rem;align-items:flex-start;padding:1.5rem 1.6rem;border-radius:20px;background:var(--bone);border:1px solid var(--line)}
+.place{display:flex;gap:1.1rem;align-items:flex-start;padding:1.5rem 1.6rem;border-radius:20px;background:var(--bone);border:1px solid var(--line);box-shadow:0 10px 30px rgba(74,66,56,.05)}
 .pin-ico{flex:none;width:44px;height:44px;border-radius:50%;background:var(--gold-p);color:var(--rose);display:grid;place-items:center}
 .place h3{font-size:1.6rem;margin:.3rem 0 .2rem}.place p{margin:0;font-size:.95rem}
+.event-times{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.event-time{padding:0 0 1rem;border-bottom:1px solid var(--line-d)}
+.event-time small{display:block;margin-bottom:.65rem;font-size:.68rem;letter-spacing:.32em;text-transform:uppercase;color:var(--olive-t)}
+.event-time strong{display:block;font:400 1.35rem var(--disp);color:var(--ink)}
 .wleft .btns{flex-direction:column;align-items:flex-start;margin:0}
 .map{padding:8px;border-radius:28px;background:var(--bone);border:1px solid var(--line)}
 .map iframe{display:block;width:100%;height:clamp(320px,42vw,420px);border:0;border-radius:20px;filter:saturate(.55) sepia(.12)}
@@ -201,6 +198,8 @@ small{font-size:.68rem;letter-spacing:.34em;text-transform:uppercase;color:var(-
   .tl p{margin-left:auto}
   .ph{width:100%;max-width:330px;margin:auto}
   .where{grid-template-columns:1fr}
+  .event-times{gap:1rem}
+  .event-time strong{font-size:1.25rem}
   .wleft .btns{align-items:stretch}.wleft .btn{text-align:center}
   .form.row{flex-direction:column;align-items:stretch;gap:1rem}
 }
