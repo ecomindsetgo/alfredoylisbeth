@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#5a4032">
+<meta name="description" content="Alfredo & Lisbeth — 28 de noviembre de 2026. Te invitamos a celebrar con nosotros.">
+<title>Alfredo & Lisbeth · 28.11.2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Italiana&family=Jost:wght@300;400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="locked">
+
+<div class="intro" id="intro">
+  <div class="dust" id="dust"></div>
+  <p class="for" id="forGuest">Hay una invitación para ti</p>
+  <div class="env" id="env">
+    <div class="card"><small>Con amor</small><b class="shine">A <em class="sc">&</em> L</b><span>28 · 11 · 2026</span></div>
+    <div class="front"></div>
+    <div class="flap"></div>
+    <button class="seal" id="seal" aria-label="Abrir invitación"><span class="a"><b>A&L</b></span><span class="b"><b>A&L</b></span></button>
+  </div>
+  <p class="tap">Rompe el sello para abrir</p>
+</div>
+
+<button class="music-button" id="musicButton" aria-label="Música">♪</button>
+<audio id="weddingSong" loop preload="none"><source src="music/besame.mp3" type="audio/mpeg"></audio>
+
+<main>
+  <section class="hero cocoa">
+    <p class="eyebrow rise" style="--d:1">Con el corazón feliz, te invitamos</p>
+    <h1 class="rise" style="--d:2">Alfredo<em class="sc">&</em>Lisbeth</h1>
+    <p class="hdate rise" style="--d:4"><span></span>28 · 11 · 2026<span></span></p>
+    <div class="scroll rise" style="--d:6">desliza</div>
+  </section>
+
+  <section class="sec">
+    <div class="in narrow reveal">
+      <p class="eyebrow">Una noticia bonita</p>
+      <h2>Este día <em>también es tuyo</em></h2>
+      <p>Hay personas que hacen el camino más liviano y más lindo. Tú eres una de ellas, y queremos tenerte a nuestro lado cuando digamos «para siempre».</p>
+      <p>Ven con ganas de abrazar, brindar y bailar. Nosotros nos encargamos del resto.</p>
+    </div>
+  </section>
+
+  <section class="sec cream">
+    <div class="in">
+      <p class="eyebrow reveal">Nuestra historia</p>
+      <h2 class="reveal">Un camino <em>en familia</em></h2>
+      <div class="tl">
+        <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>01</small><h3>Nos encontramos</h3><p>Un día, sin planearlo, nuestros caminos se cruzaron. Lo que empezó con una charla sencilla se fue convirtiendo en costumbre, en risa y en hogar.</p></div></article>
+        <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>02</small><h3>Aprendimos a ser equipo</h3><p>Entre días fáciles y otros no tanto, descubrimos que somos mejores cuando caminamos juntos.</p></div></article>
+        <article class="reveal kids"><div class="ph"><span>Foto de nuestros hijos</span></div><div><small>03</small><h3>Llegaron ellos</h3><p>Nuestros hijos llenaron la casa de ruido, abrazos y sueños. Son nuestro mayor orgullo y la razón por la que este día se siente todavía más grande.</p></div></article>
+        <article class="reveal"><div class="ph"><span>Foto</span></div><div><small>04</small><h3>Ahora, el sí</h3><p>Después de todo lo vivido, queremos celebrarlo en familia, rodeados de quienes nos han acompañado en el camino.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec olive">
+    <div class="in reveal">
+      <p class="eyebrow">Cada día nos acerca</p>
+      <h2>28 · 11 · 2026</h2>
+      <div class="countdown">
+        <div><strong id="days">00</strong><span>días</span></div>
+        <div><strong id="hours">00</strong><span>horas</span></div>
+        <div><strong id="minutes">00</strong><span>min</span></div>
+        <div><strong id="seconds">00</strong><span>seg</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="in">
+      <p class="eyebrow reveal">Cuándo y dónde</p>
+      <h2 class="reveal">Cómo <em>llegar</em></h2>
+      <div class="where reveal">
+        <div class="info">
+          <div><small>Ceremonia</small><h3>Hora por definir</h3></div>
+          <div><small>Recepción</small><h3>Hora por definir</h3></div>
+          <div><small>Lugar</small><h3 id="venueName">Lugar por definir</h3><p id="venueAddr">Dirección por definir</p></div>
+          <div class="btns"><a class="btn dk" id="gmaps" target="_blank" rel="noopener">Google Maps</a><a class="btn dk" id="waze" target="_blank" rel="noopener">Waze</a></div>
+        </div>
+        <div class="map"><iframe id="mapFrame" title="Mapa del lugar" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec blush">
+    <div class="in narrow">
+      <p class="eyebrow reveal">Código de vestimenta</p>
+      <h2 class="reveal sc big">Elegante</h2>
+      <p class="reveal">Queremos verte cómodo y radiante. Te sugerimos una paleta de tonos tierra, la misma que vestirá nuestra celebración.</p>
+      <div class="swatches reveal">
+        <div><i style="background:#e6d3b8"></i>Arena</div>
+        <div><i style="background:#c98763"></i>Terracota</div>
+        <div><i style="background:#8a8b5a"></i>Oliva</div>
+        <div><i style="background:#8a5a44"></i>Cacao</div>
+        <div><i style="background:#d8b878"></i>Champán</div>
+      </div>
+      <p class="reveal small">Pedimos reservar el blanco y el marfil para la novia.</p>
+    </div>
+  </section>
+
+  <section class="sec terra">
+    <div class="in narrow reveal">
+      <p class="eyebrow">Para disfrutar sin pendientes</p>
+      <h2>Celebración <em>solo para adultos</em></h2>
+      <p>Queremos que esta noche sea para brindar, conversar y bailar sin prisa. Por eso la fiesta será únicamente para adultos. Gracias por entenderlo con cariño.</p>
+    </div>
+  </section>
+
+  <section class="sec cream">
+    <div class="in narrow reveal">
+      <p class="eyebrow">Nuestra banda sonora</p>
+      <h2>Bésame</h2>
+      <p>Ricardo Montaner · nuestra canción</p>
+      <button class="btn dk" id="playSong">▶ Escuchar</button>
+      <p class="mt">¿Qué canción te hace mover los pies? Cuéntanos y la sumamos a la lista.</p>
+      <form id="songForm" class="form row">
+        <input type="text" id="songName" required placeholder="Canción y artista">
+        <button type="submit" class="btn dk">Sugerir</button>
+      </form>
+      <p class="note" id="songNote"></p>
+    </div>
+  </section>
+
+  <section class="sec" id="rsvp">
+    <div class="in narrow reveal">
+      <p class="eyebrow">Confirma tu asistencia</p>
+      <h2>¿Brindamos <em>juntos?</em></h2>
+      <p>Tu respuesta nos ayuda a preparar cada detalle con cariño.</p>
+      <form id="rsvpForm" class="form">
+        <input type="text" id="guestName" required placeholder="Nombre completo">
+        <select id="attendance" required>
+          <option value="">¿Podrás acompañarnos?</option>
+          <option value="si">Sí, allí estaré</option>
+          <option value="no">No podré esta vez</option>
+        </select>
+        <textarea id="guestMessage" rows="2" placeholder="Un mensaje para nosotros (opcional)"></textarea>
+        <button type="submit" class="btn dk">Confirmar</button>
+        <p class="note" id="formNote"></p>
+      </form>
+    </div>
+  </section>
+
+  <section class="final cocoa">
+    <div class="in reveal">
+      <p class="eyebrow">Gracias por ser parte de nuestra historia</p>
+      <h2>Contigo,<br><em>todo es más bonito.</em></h2>
+      <p class="hdate"><span></span>Alfredo & Lisbeth<span></span></p>
+    </div>
+  </section>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
