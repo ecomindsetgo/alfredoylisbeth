@@ -50,8 +50,8 @@ $("seal").addEventListener("click", () => {
     document.body.classList.add("ready");
     intro.classList.add("gone");
     musicButton.classList.add("visible");
-  }, 1900);
-  setTimeout(() => intro.remove(), 3000);
+  }, 2000);
+  setTimeout(() => intro.remove(), 4000);
 });
 
 function toggleMusic() {
