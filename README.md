@@ -1,73 +1,47 @@
 # Invitación web — Alfredo & Lisbeth
 
-Versión 6: apertura con arco, anillos y ramas que se dibujan solas + diseño sobrio, minimalista y en tonos pastel/arena (Cormorant Garamond · Jost).
+## Versión 8 · experiencia premium 2026
 
-Personalizar por invitado: `tuweb.com/?para=Familia%20Pérez` (aparece en el sobre y en el RSVP).
+Esta versión mantiene la estética minimalista, cálida y elegante de la invitación, pero mejora la experiencia móvil y la organización del evento.
 
-## Estructura
+### Novedades principales
+- Apertura animada con arco, anillos y ramas.
+- Portada con CTA inmediato para **Confirmar asistencia** y **Guardar fecha**.
+- Barra flotante móvil con accesos a RSVP, ubicación y calendario.
+- Tarjetas rápidas con fecha, ciudad, dress code y celebración para adultos.
+- Botón **Guardar en calendario** que descarga un archivo `.ics` compatible con calendarios habituales.
+- RSVP mejorado con campo opcional de **alergias o restricciones alimentarias**.
+- Preguntas frecuentes para reducir mensajes repetitivos a los novios.
+- Metadatos de privacidad: la invitación pide a buscadores que no la indexen.
+- Mejoras de accesibilidad: foco visible, estados de música y mensajes `aria-live`.
+- Mejoras mobile-first y safe area para iPhone.
+- El QR de Yape queda en un estado visual limpio de “QR por agregar” hasta que coloques el QR oficial.
 
+## Archivos principales
 - `index.html` — estructura y textos.
 - `style.css` — diseño responsive y animaciones.
-- `script.js` — contador, música, animaciones y RSVP local.
-- `music/` — coloca aquí tu archivo de audio autorizado como `besame.mp3`.
+- `script.js` — configuración, calendario, música, mapa, regalos y RSVP.
+- `google-apps-script.gs` — recepción de confirmaciones y canciones en Google Sheets.
+- `GUIA-GOOGLE-SHEETS.md` — instrucciones de publicación del Apps Script.
+- `fotos/` — fotos de la historia.
+- `music/besame.mp3` — música de la invitación.
+- `qr/plin.png` — QR de Plin.
 
-## Fecha provisional
+## Datos que aún debes definir antes de enviarla
+En `script.js`, dentro de `CONFIG`, completa cuando los tengas:
+- `horaCeremonia`
+- `horaRecepcion`
+- `limiteConfirmar`
+- QR oficial de Yape: guarda la imagen como `qr/yape.png` y cambia `qr: ""` por `qr: "qr/yape.png"`.
+- Completa y verifica la cuenta bancaria/CCI antes de publicar. Mientras sigan con ceros de ejemplo, la tarjeta bancaria se oculta automáticamente para no mostrar datos falsos.
 
-28 de noviembre de 2026.
+Mientras las horas estén por definir, el botón de calendario guarda el 28 de noviembre como evento de todo el día para no comunicar una hora incorrecta.
 
-## Pendiente de reemplazar
+## Invitación personalizada
+Puedes compartir enlaces como:
+`https://tuweb.com/?para=Familia%20Pérez`
 
-- Fotos de referencia → fotos reales.
-- Lugar por definir → lugar y mapa.
-- Horarios.
-- Dress code definitivo.
-- Opciones de regalo.
-- Historia real de Alfredo & Lisbeth.
-- Música: añadir un archivo que tengas derecho a utilizar.
+El nombre aparece en la apertura y precompleta el RSVP y la sugerencia musical.
 
 ## Publicación
-
-Puedes subir los archivos directamente a un repositorio de GitHub y conectar el repositorio con Netlify.
-
-No requiere Node.js para esta versión: es HTML + CSS + JavaScript puro.
-
-## Versión 3
-- Edita `CONFIG` al inicio de `script.js`: lugar, dirección, búsqueda de Google Maps y tu WhatsApp (para recibir confirmaciones y canciones).
-- Fotos: dentro de cada `<div class="ph">` agrega `<img src="foto.jpg" alt="">`.
-
-## Versión 4
-- Nueva sección **Lista de regalos** (ideas + Yape/Plin/cuenta con botón copiar): se edita en `CONFIG` de `script.js`.
-- Confirmaciones y canciones se guardan en Google Sheets: ver `GUIA-GOOGLE-SHEETS.md` y `google-apps-script.gs`.
-- Apertura del sobre más rápida, mapa rediseñado, cuenta regresiva con números legibles, paleta de vestimenta en una fila en móvil.
-
-## Versión 5 (minimalista · moderna · campestre)
-- Se reemplazó el sobre con sello por un **arco con ramas que se dibujan solas** (SVG con efecto de trazo). Al tocar «Abrir invitación» el marco se desvanece y el papel sube revelando la portada.
-- Paleta nueva: hueso, verde salvia, terracota suave y gris carbón. Tipografías: Cormorant Garamond + Jost (se quitaron Italiana y Pinyon Script).
-- Fotos con forma de arco que se revelan con máscara al hacer scroll; parallax suave en la portada; polen sutil de fondo.
-- Las ramas se generan en `script.js` (función `sprig`): puedes cambiar cantidad de hojas, tamaño y curva editando los puntos.
-- Todo lo funcional se mantiene igual: `CONFIG`, mapa, regalos, RSVP y canciones con Google Sheets, música y `?para=Nombre`.
-- La paleta de vestimenta de los invitados (Arena, Terracota, Oliva, Cacao, Champán) no se tocó.
-
-## Versión 6 (sobria · pastel · anillos)
-- **Anillos de boda** dibujados en línea dorada (con un brillo en el diamante) en la apertura, la portada, la tarjeta de confirmación y el cierre. Las ramas se mantienen, más suaves.
-- **Colores pastel y arena**: se quitaron todos los fondos oscuros (cuenta regresiva en salvia pastel, cierre en rosa arena, pie en arena).
-- **Portada corregida**: «desliza» ya no tapa la fecha; ahora está dentro del flujo y desaparece al bajar. El texto de la portada ya no se desplaza al hacer scroll.
-- **Orden más claro**: Mensaje → Cuenta regresiva → El gran día (programa + lugar + mapa) → Vestimenta → Solo adultos → Confirmación → Historia → Regalos → Música → Cierre.
-- **Programa del día** en línea de tiempo. Opcionales en `CONFIG`: `horaLlegada` (agrega «Llegada de invitados») y `limiteConfirmar` (muestra «confirma antes del …»).
-- **Tarjeta «¡Gracias por confirmar!»** al enviar la confirmación.
-- **Google Sheets más fiable**: confirmaciones y canciones se guardan con ID único (sin duplicados), con el enlace del invitado (`?para=`) y reintento automático si no hay internet. Hay que pegar el nuevo `google-apps-script.gs` y publicar una nueva versión (ver `GUIA-GOOGLE-SHEETS.md`).
-
-
-## Fotos de Nuestra Historia
-
-Las cuatro fotos de la sección **Nuestra historia** están en la carpeta `fotos/`:
-
-```text
-fotos/
-├── historia-01.jpg
-├── historia-02.jpg
-├── historia-03.jpg
-└── historia-04.jpg
-```
-
-Para colocar tus fotos, reemplaza esos cuatro archivos manteniendo exactamente los mismos nombres. No necesitas modificar `index.html`.
+Puedes subir esta carpeta a GitHub Pages, Netlify u otro hosting estático. No requiere Node.js.

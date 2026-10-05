@@ -2,9 +2,16 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#fbf8f2">
 <meta name="description" content="Alfredo & Lisbeth — 28 de noviembre de 2026. Te invitamos a celebrar con nosotros.">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Alfredo & Lisbeth · 28.11.2026">
+<meta property="og:description" content="Una invitación para celebrar nuestro sí contigo.">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23fbf8f2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-size='32' fill='%239c654f'%3EA%26L%3C/text%3E%3C/svg%3E">
 <title>Alfredo & Lisbeth · 28.11.2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,9 +52,19 @@
       <p class="eyebrow rise" style="--d:1">Con el corazón feliz, te invitamos</p>
       <h1 class="rise" style="--d:2">Alfredo<em class="sc">&</em>Lisbeth</h1>
       <p class="hdate rise" style="--d:4"><span></span>28 · 11 · 2026<span></span></p>
+      <div class="hero-actions rise" style="--d:5">
+        <a class="btn fill" href="#rsvp">Confirmar asistencia</a>
+        <button class="btn soft" id="saveDateHero" type="button">Guardar fecha</button>
+      </div>
     </div>
     <div class="scroll rise" id="scrollHint" style="--d:6">desliza</div>
   </section>
+
+  <nav class="quick-dock" id="quickDock" aria-label="Accesos rápidos">
+    <a href="#rsvp" aria-label="Confirmar asistencia"><span aria-hidden="true">✓</span><b>Confirmar</b></a>
+    <a href="#dia" aria-label="Ver ubicación"><span aria-hidden="true">⌖</span><b>Ubicación</b></a>
+    <button id="saveDateDock" type="button" aria-label="Guardar fecha"><span aria-hidden="true">＋</span><b>Calendario</b></button>
+  </nav>
 
   <!-- Mensaje -->
   <section class="sec" id="mensaje">
@@ -56,6 +73,12 @@
       <h2>Este día <em>también es tuyo</em></h2>
       <p>Hay personas que hacen el camino más liviano y más lindo. Tú eres una de ellas, y queremos tenerte a nuestro lado cuando digamos «para siempre».</p>
       <p>Ven con ganas de abrazar, brindar y bailar. Nosotros nos encargamos del resto.</p>
+      <div class="essentials" aria-label="Datos principales">
+        <div><small>Fecha</small><strong>28 NOV</strong></div>
+        <div><small>Ciudad</small><strong>Chimbote</strong></div>
+        <div><small>Estilo</small><strong>Elegante</strong></div>
+        <div><small>Celebración</small><strong>Adultos</strong></div>
+      </div>
     </div>
   </section>
 
@@ -83,7 +106,7 @@
         <div class="wleft">
           <div class="place">
             <span class="pin-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span>
-            <div><small>Ceremonia &amp; Recepción</small><h3 id="venueName"> Ciro's Eventos & Catering | Chimbote </h3><p id="venueAddr"> Jirón José Olaya </p></div>
+            <div><small>Ceremonia &amp; Recepción</small><h3 id="venueName"> Ciro's Eventos & Catering </h3><p id="venueAddr"> Jr. José Olaya 478, Chimbote 02803 </p></div>
           </div>
 
           <div class="event-times">
@@ -97,7 +120,11 @@
             </div>
           </div>
 
-          <div class="btns"><a class="btn" id="gmaps" target="_blank" rel="noopener">Abrir en Google Maps</a><a class="btn" id="waze" target="_blank" rel="noopener">Cómo llegar con Waze</a></div>
+          <div class="btns">
+            <a class="btn" id="gmaps" target="_blank" rel="noopener">Abrir en Google Maps</a>
+            <a class="btn" id="waze" target="_blank" rel="noopener">Cómo llegar con Waze</a>
+            <button class="btn soft" id="saveDatePlace" type="button">Guardar en calendario</button>
+          </div>
 
           <!-- Se conserva el soporte para hora de llegada; permanece oculto si CONFIG.horaLlegada está vacío. -->
           <div id="itLlegada" hidden aria-hidden="true"><time id="timeLle"></time></div>
@@ -150,9 +177,12 @@
           <option value="si">Sí, allí estaré</option>
           <option value="no">No podré esta vez</option>
         </select>
-        <textarea id="guestMessage" rows="2" placeholder="Un mensaje para nosotros (opcional)"></textarea>
+        <div class="yes-only" id="yesOnly" hidden>
+          <input type="text" id="dietary" maxlength="180" placeholder="Alergias o restricciones alimentarias (opcional)">
+        </div>
+        <textarea id="guestMessage" rows="2" maxlength="350" placeholder="Un mensaje para nosotros (opcional)"></textarea>
         <button type="submit" class="btn fill">Confirmar</button>
-        <p class="note" id="formNote"></p>
+        <p class="note" id="formNote" role="status" aria-live="polite"></p>
       </form>
       <div class="done" id="rsvpDone" hidden>
         <svg class="rings" data-rings viewBox="-45 -42 90 72" aria-hidden="true"></svg>
@@ -200,7 +230,33 @@
         <input type="text" id="songName" required placeholder="Canción y artista">
         <button type="submit" class="btn fill">Sugerir</button>
       </form>
-      <p class="note" id="songNote"></p>
+      <p class="note" id="songNote" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- Preguntas frecuentes -->
+  <section class="sec paper" id="faq">
+    <div class="in narrow reveal">
+      <p class="eyebrow">Para tenerlo a mano</p>
+      <h2>Preguntas <em>frecuentes</em></h2>
+      <div class="faq-list">
+        <details>
+          <summary>¿La celebración es para adultos?</summary>
+          <p>Sí. Hemos preparado una celebración únicamente para adultos y agradecemos mucho tu comprensión.</p>
+        </details>
+        <details>
+          <summary>¿Cuál es el código de vestimenta?</summary>
+          <p>Elegante, en armonía con tonos tierra. El blanco y el marfil quedan reservados para la novia.</p>
+        </details>
+        <details>
+          <summary>¿Cómo llego al lugar?</summary>
+          <p>En la sección “Cuándo y dónde” encontrarás accesos directos a Google Maps y Waze.</p>
+        </details>
+        <details>
+          <summary>¿Es necesario llevar regalo?</summary>
+          <p>No. Lo más importante para nosotros es compartir este día contigo. La sección de regalos es completamente opcional.</p>
+        </details>
+      </div>
     </div>
   </section>
 

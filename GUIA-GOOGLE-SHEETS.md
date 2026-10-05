@@ -1,56 +1,56 @@
-# ¿Dónde se guardan las confirmaciones y las canciones?
+# Google Sheets — confirmaciones y canciones
 
-## Cómo está ahora
-Una página web (Netlify/GitHub) no tiene base de datos. Mientras `sheetsUrl` esté vacío en `script.js`,
-lo que escribe cada invitado se guarda **solo en su propio celular** (localStorage) y **tú no lo ves**.
-Por eso conectamos la invitación con una hoja de Google Sheets.
+La invitación ya tiene configurada una URL de Google Apps Script en `script.js`.
 
-## Cómo queda funcionando
-Invitado llena el formulario → `script.js` lo envía → tu Google Apps Script → se agrega una fila en tu hoja.
-- Pestaña **Confirmaciones**: Fecha, Nombre, ¿Asiste?, Mensaje, Invitado (enlace), ID
-- Pestaña **Canciones**: Fecha, Nombre, Canción y artista, Invitado (enlace), ID
-(Las pestañas se crean solas con el primer envío. Si ya existían con menos columnas, se completan solas.)
-- **Invitado (enlace)** guarda el nombre del enlace personalizado (`?para=Familia Pérez`), útil para saber a quién se envió cada invitación.
-- **ID** es un código único por envío: si el celular reintenta, no se duplica la fila.
-- Si el invitado no tiene internet al enviar, la respuesta queda guardada en su celular y se reenvía sola cuando vuelva la conexión (con la página abierta).
+## Qué se guarda
+### Pestaña `Confirmaciones`
+- Fecha
+- Nombre
+- ¿Asiste?
+- Mensaje
+- Invitado (enlace personalizado)
+- ID único
+- Restricciones alimentarias
 
-## Pasos (10 minutos, gratis)
-1. Entra a sheets.google.com y crea una hoja nueva: "Invitación Alfredo y Lisbeth".
-2. Menú **Extensiones → Apps Script**.
-3. Borra lo que aparezca y pega todo el contenido de `google-apps-script.gs`. Guarda (icono del disquete).
-4. En la barra superior elige la función **prueba** y pulsa **▶ Ejecutar**. Autoriza los permisos
-   (si dice "Google no ha verificado esta app": Avanzado → Ir a proyecto (no seguro) → Permitir; es tu propio script).
-   Revisa que aparezcan dos filas de prueba en las pestañas Confirmaciones y Canciones; luego bórralas.
-5. Clic en **Implementar → Nueva implementación**.
-   - Tipo (engranaje): **Aplicación web**
+### Pestaña `Canciones`
+- Fecha
+- Nombre
+- Canción y artista
+- Invitado (enlace personalizado)
+- ID único
+
+El ID evita duplicados cuando un celular reintenta un envío. Si el invitado pierde conexión, la respuesta queda en cola local y se reintenta al recuperar internet mientras la invitación siga abierta.
+
+## Importante al pasar a esta versión
+Como el RSVP ahora incluye `Restricciones alimentarias`, debes actualizar el Apps Script. La nueva columna se agrega al final para respetar tus registros anteriores:
+1. Abre tu Google Sheet.
+2. Ve a **Extensiones → Apps Script**.
+3. Reemplaza el código por el contenido del archivo `google-apps-script.gs`.
+4. Guarda.
+5. Ve a **Implementar → Administrar implementaciones**.
+6. Edita la implementación actual y selecciona **Nueva versión**.
+7. Implementa.
+
+La URL `/exec` normalmente no cambia, así que no deberías tener que modificar `sheetsUrl`.
+
+## Instalación desde cero
+1. Crea una hoja llamada, por ejemplo, `Invitación Alfredo y Lisbeth`.
+2. Ve a **Extensiones → Apps Script**.
+3. Pega `google-apps-script.gs`.
+4. Ejecuta la función `prueba` una vez y autoriza permisos.
+5. Revisa que se creen `Confirmaciones` y `Canciones`.
+6. Publica como **Aplicación web**:
    - Ejecutar como: **Yo**
-   - Quién tiene acceso: **Cualquier persona**
-6. Copia la **URL de la aplicación web** (termina en `/exec`).
-7. Abre `script.js` y pégala en `CONFIG`:
-   `sheetsUrl: "https://script.google.com/macros/s/XXXXXXXX/exec",`
-8. Sube los archivos de nuevo a GitHub/Netlify.
-9. Prueba desde la invitación (confirma asistencia y sugiere una canción) y revisa que aparezcan las filas.
+   - Acceso: **Cualquier persona**
+7. Copia la URL terminada en `/exec` y colócala en `CONFIG.sheetsUrl`.
 
-## Si ya tenías el Apps Script de la versión anterior
-Pega el nuevo `google-apps-script.gs` y publica una nueva versión: **Implementar → Administrar implementaciones → editar (lápiz) → Versión: Nueva versión → Implementar**.
-La URL no cambia, así que no hace falta tocar `sheetsUrl`. No borres tus pestañas: se completan solas.
+## Si no llegan registros
+- La implementación debe permitir acceso a **Cualquier persona**.
+- Usa la URL `/exec`, no `/dev`.
+- Después de cambiar el Apps Script debes publicar una **Nueva versión**.
+- Ejecuta `prueba`; si esa prueba falla, el problema está en Apps Script/permisos.
 
-## Si no aparecen las filas
-- La implementación debe tener acceso **Cualquier persona** (no "Solo yo" ni "Cualquier persona con cuenta de Google").
-- La URL debe terminar en **/exec** (no en /dev).
-- Después de editar el código hay que publicar una **Nueva versión** (ver arriba); guardar no basta.
-- Ejecuta `prueba` en el editor: si ahí tampoco aparecen filas, el problema es del script/permisos, no de la invitación.
-- Ten en cuenta: el navegador no puede leer la respuesta de Google (es normal), así que la invitación confirma al invitado
-  en cuanto envía. La prueba real siempre es mirar tu hoja.
-
-## Notas
-- Cualquiera con la URL podría enviar datos a tu hoja; no la publiques fuera de la invitación.
-- Si además quieres aviso por WhatsApp, avísame y lo agregamos.
-
-## Lista de regalos
-Edita `ideas` y `pagos` al inicio de `script.js` (números de Yape/Plin, cuenta, CCI y titular).
-Los invitados tienen un botón "Copiar" en cada número.
-
-### QR de Yape y Plin
-Guarda las imágenes en la carpeta `qr/` con los nombres `yape.png` y `plin.png` (o cambia la ruta en `CONFIG.regalos`).
-Mientras no existan, se muestra un recuadro "QR por agregar".
+## QR de Yape
+El ZIP actual no contiene el QR oficial de Yape. Por seguridad no se genera ni se inventa uno a partir del número. Cuando tengas tu QR oficial:
+1. Guárdalo como `qr/yape.png`.
+2. En `script.js`, cambia el campo de Yape a `qr: "qr/yape.png"`.

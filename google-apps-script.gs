@@ -3,7 +3,7 @@
 const ZONA = "America/Lima";
 
 const HOJAS = {
-  asistencia: { nombre: "Confirmaciones", cols: ["Fecha", "Nombre", "¿Asiste?", "Mensaje", "Invitado (enlace)", "ID"] },
+  asistencia: { nombre: "Confirmaciones", cols: ["Fecha", "Nombre", "¿Asiste?", "Mensaje", "Invitado (enlace)", "ID", "Restricciones alimentarias"] },
   cancion:    { nombre: "Canciones",      cols: ["Fecha", "Nombre", "Canción y artista", "Invitado (enlace)", "ID"] }
 };
 
@@ -22,7 +22,7 @@ function doPost(e) {
     const fecha = Utilities.formatDate(new Date(), ZONA, "dd/MM/yyyy HH:mm:ss");
     const fila = tipo === "cancion"
       ? [fecha, limpio(p.nombre), limpio(p.cancion), limpio(p.invitado), id]
-      : [fecha, limpio(p.nombre), limpio(p.asistencia), limpio(p.mensaje), limpio(p.invitado), id];
+      : [fecha, limpio(p.nombre), limpio(p.asistencia), limpio(p.mensaje), limpio(p.invitado), id, limpio(p.restricciones)];
     sh.appendRow(fila);
     return salida({ ok: true });
   } catch (err) {
@@ -36,7 +36,7 @@ function doGet() { return salida({ ok: true, mensaje: "Invitación Alfredo & Lis
 
 // Ejecútala una vez desde el editor (▶ Ejecutar) para autorizar permisos y comprobar que se crean las filas de prueba.
 function prueba() {
-  doPost({ parameter: { tipo: "asistencia", nombre: "PRUEBA (puedes borrar esta fila)", asistencia: "Sí", mensaje: "Fila de prueba", id: "prueba-a-" + Date.now() } });
+  doPost({ parameter: { tipo: "asistencia", nombre: "PRUEBA (puedes borrar esta fila)", asistencia: "Sí", restricciones: "Ninguna", mensaje: "Fila de prueba", id: "prueba-a-" + Date.now() } });
   doPost({ parameter: { tipo: "cancion", nombre: "PRUEBA (puedes borrar esta fila)", cancion: "Canción de prueba", id: "prueba-c-" + Date.now() } });
 }
 

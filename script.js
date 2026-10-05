@@ -1,8 +1,8 @@
 // ===== EDITA AQUÍ =====
 const CONFIG = {
-  fecha: "2026-11-28T17:00:00-05:00",
-  lugar: "Ciro's Eventos & Catering | Chimbote",
-  direccion: "Jirón José Olaya",
+  fecha: "2026-11-28T00:00:00-05:00", // mientras la hora esté por definir, cuenta hasta el inicio del día
+  lugar: "Ciro's Eventos & Catering",
+  direccion: "Jr. José Olaya 478, Chimbote 02803",
   busqueda: "WCH4+GXQ, Jirón José Olaya, Chimbote 02803",      // dirección exacta o nombre del local tal como sale en Google Maps
   sheetsUrl: "https://script.google.com/macros/s/AKfycbyvlMoZZkwQoJ1egHAFs4NRcOQnC5MjbkyQlWUkEDVEMKphiNkscs6amVOJewmgwVk/exec",              // URL de tu Google Apps Script (ver GUIA-GOOGLE-SHEETS.md) → confirmaciones y canciones a tu Excel
   whatsapp: "",               // opcional, ej: "51999999999" (solo se usa si NO configuras sheetsUrl)
@@ -12,10 +12,13 @@ const CONFIG = {
   horaLlegada: "",            // opcional, ej: "3:00 p. m." (vacío = no se muestra)
   limiteConfirmar: "",        // opcional, ej: "14 de noviembre" (vacío = no se muestra)
 
+  // Calendario: mientras las horas estén por definir, se guarda como evento de todo el día.
+  calendario: { titulo: "Boda Alfredo & Lisbeth", fecha: "2026-11-28", inicio: "", fin: "" },
+
   // ---- LISTA DE REGALOS: edita libremente ----
   regalos: {
     sugerencias: ["Artículos para nuestro hogar", "Experiencias para disfrutar en familia", "Un detalle elegido con cariño"],
-    yape: { numero: "960131764", titular: "Lisbeth Carolina Méndez Orellana", qr: "qr/yape.png" },   // guarda tu QR en la carpeta qr/
+    yape: { numero: "960131764", titular: "Lisbeth Carolina Méndez Orellana", qr: "" },   // guarda tu QR en la carpeta qr/
     plin: { numero: "912352126", titular: "Alfredo Raúl Cruzado Palacios", qr: "qr/plin.png" },
     cuenta: { banco: "Banco de Crédito del Perú", titular: "Lisbeth Carolina Méndez Orellana", cuenta: "000-00000000-0-00", cci: "000-000-000000000000-00" }
   }
@@ -23,10 +26,61 @@ const CONFIG = {
 // ======================
 const $ = id => document.getElementById(id);
 const song = $("weddingSong"), musicButton = $("musicButton"), intro = $("intro");
+song.volume = .42;
 
 // Invitado personalizado: tuweb.com/?para=Familia%20Pérez
 const guest = new URLSearchParams(location.search).get("para");
 if (guest) { $("forGuest").textContent = "Para " + guest; $("guestName").value = guest; $("songFrom").value = guest; }
+
+// ===== Guardar fecha (.ics) =====
+function icsEscape(v="") {
+  return String(v)
+    .replace(/\\/g, "\\\\")
+    .replace(/\n/g, "\\n")
+    .replace(/;/g, "\\;")
+    .replace(/,/g, "\\,");
+}
+function compactDateTime(v) {
+  return String(v).replace(/[-:]/g, "").replace(/([+-]\d\d):?(\d\d)$/, "");
+}
+function saveDate() {
+  const C = CONFIG.calendario || {};
+  const baseDate = C.fecha || "2026-11-28";
+  const date = baseDate.replace(/-/g, "");
+  const next = new Date(`${baseDate}T12:00:00`);
+  next.setDate(next.getDate() + 1);
+  const nextDate = `${next.getFullYear()}${String(next.getMonth()+1).padStart(2,"0")}${String(next.getDate()).padStart(2,"0")}`;
+  const timed = Boolean(C.inicio && C.fin);
+  const lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Alfredo y Lisbeth//Invitacion//ES",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "BEGIN:VEVENT",
+    "UID:boda-alfredo-lisbeth-20261128@invitacion",
+    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")}`
+  ];
+  if (timed) lines.push(`DTSTART:${compactDateTime(C.inicio)}`, `DTEND:${compactDateTime(C.fin)}`);
+  else lines.push(`DTSTART;VALUE=DATE:${date}`, `DTEND;VALUE=DATE:${nextDate}`);
+  lines.push(
+    `SUMMARY:${icsEscape(C.titulo || "Boda Alfredo & Lisbeth")}`,
+    `LOCATION:${icsEscape(`${CONFIG.lugar}, ${CONFIG.direccion}`)}`,
+    `DESCRIPTION:${icsEscape("Celebramos nuestro sí contigo. Revisa la invitación para horarios y detalles actualizados.")}`,
+    "END:VEVENT",
+    "END:VCALENDAR"
+  );
+  const blob = new Blob([lines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Alfredo-y-Lisbeth-28-11-2026.ics";
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+["saveDateHero", "saveDateDock", "saveDatePlace"].forEach(id => $(id)?.addEventListener("click", saveDate));
 
 // ===== Ramas dibujadas con SVG (arco de apertura y esquinas del hero) =====
 const NS = "http://www.w3.org/2000/svg";
@@ -117,10 +171,18 @@ addEventListener("scroll", () => {
   });
 }, { passive: true });
 
-function toggleMusic() {
-  if (song.paused) song.play().then(() => musicButton.classList.add("playing")).catch(() => alert("Agrega tu audio en music/besame.mp3"));
-  else { song.pause(); musicButton.classList.remove("playing"); }
+function syncMusicUI() {
+  const playing = !song.paused;
+  musicButton.classList.toggle("playing", playing);
+  musicButton.setAttribute("aria-pressed", String(playing));
+  musicButton.setAttribute("aria-label", playing ? "Pausar música" : "Reproducir música");
+  const play = $("playSong"); if (play) play.textContent = playing ? "❚❚ Pausar" : "▶ Escuchar";
 }
+function toggleMusic() {
+  if (song.paused) song.play().then(syncMusicUI).catch(() => alert("Agrega tu audio en music/besame.mp3"));
+  else { song.pause(); syncMusicUI(); }
+}
+song.addEventListener("play", syncMusicUI); song.addEventListener("pause", syncMusicUI);
 musicButton.addEventListener("click", toggleMusic);
 $("playSong").addEventListener("click", toggleMusic);
 
@@ -161,9 +223,11 @@ function wallet(nombre, w) {
   const txt = el("div", "wtxt");
   txt.append(el("small", "", nombre), el("b", "", w.numero), copyBtn(w.numero), el("span", "who", "A nombre de " + w.titular));
   const qr = el("div", "qr");
-  const img = new Image(); img.alt = "QR de " + nombre; img.src = w.qr;
-  img.onerror = () => { qr.textContent = "QR por agregar"; qr.classList.add("empty"); };
-  qr.append(img);
+  if (w.qr) {
+    const img = new Image(); img.alt = "QR de " + nombre; img.src = w.qr;
+    img.onerror = () => { qr.textContent = "QR por agregar"; qr.classList.add("empty"); };
+    qr.append(img);
+  } else { qr.textContent = "QR por agregar"; qr.classList.add("empty"); }
   box.append(txt, qr);
   return box;
 }
@@ -171,8 +235,15 @@ const R = CONFIG.regalos, G = $("gifts");
 const c1 = el("div", "gcard"); c1.append(icon("heart"), el("h3", "", "Sugerencias"), el("p", "", "Hemos preparado algunas ideas para quienes quieran ayudarnos a elegir un detalle para nuestro nuevo capítulo."));
 const ul = el("ul", "glist"); R.sugerencias.forEach(t => ul.append(el("li", "", t))); c1.append(ul);
 const c2 = el("div", "gcard"); c2.append(icon("phone"), el("h3", "", "Yape / Plin"), el("p", "", "Si prefieres hacernos un aporte, puedes utilizar cualquiera de estas opciones."), wallet("Yape", R.yape), wallet("Plin", R.plin));
-const c3 = el("div", "gcard"); c3.append(icon("bank"), el("h3", "", "Cuenta bancaria"), el("p", "", R.cuenta.banco), field("Cuenta", R.cuenta.cuenta), field("CCI", R.cuenta.cci), el("span", "who", "A nombre de " + R.cuenta.titular));
-G.append(c1, c2, c3);
+const validBank = v => Boolean(v && !/^0[\d\s-]*$/.test(String(v).trim()));
+if (R.cuenta && validBank(R.cuenta.cuenta) && validBank(R.cuenta.cci)) {
+  const c3 = el("div", "gcard");
+  c3.append(icon("bank"), el("h3", "", "Cuenta bancaria"), el("p", "", R.cuenta.banco), field("Cuenta", R.cuenta.cuenta), field("CCI", R.cuenta.cci), el("span", "who", "A nombre de " + R.cuenta.titular));
+  G.append(c1, c2, c3);
+} else {
+  G.classList.add("two");
+  G.append(c1, c2);
+}
 
 // Cuenta regresiva
 const wedding = new Date(CONFIG.fecha);
@@ -205,32 +276,44 @@ async function flushPending() {
 addEventListener("online", flushPending);
 flushPending();
 
+// Campos condicionales del RSVP
+$("attendance").addEventListener("change", () => {
+  const yes = $("attendance").value === "si";
+  $("yesOnly").hidden = !yes;
+  if (!yes) $("dietary").value = "";
+});
+
 // Guarda copia local, envía a Sheets (o WhatsApp si no hay Sheets). Si no hay conexión, queda en cola y se reintenta sola.
 async function send(tipo, data, text) {
-  const key = tipo === "cancion" ? "wedding_songs" : "wedding_rsvp";
-  LS.set(key, [...LS.get(key), { ...data, date: new Date().toISOString() }]);
   if (CONFIG.sheetsUrl) {
     const item = { tipo, ...data, invitado: guest || "", id: uid() };
     try { await post(item); return true; }
     catch { LS.set("wedding_pending", [...LS.get("wedding_pending"), item]); return false; }
   }
-  if (CONFIG.whatsapp) open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`, "_blank");
+  if (CONFIG.whatsapp) {
+    open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(text)}`, "_blank");
+    return true;
+  }
+  // Solo si no existe un canal de envío se conserva una copia local como respaldo.
+  const key = tipo === "cancion" ? "wedding_songs" : "wedding_rsvp";
+  LS.set(key, [...LS.get(key), { ...data, date: new Date().toISOString() }]);
   return true;
 }
 $("rsvpForm").addEventListener("submit", async e => {
   e.preventDefault();
   const form = e.target, btn = form.querySelector("button[type=submit]");
   const name = $("guestName").value.trim(), attendance = $("attendance").value, message = $("guestMessage").value.trim();
+  const dietary = attendance === "si" ? $("dietary").value.trim() : "";
   if (!name || !attendance) return;
   btn.disabled = true;
-  const ok = await send("asistencia", { nombre: name, asistencia: attendance === "si" ? "Sí" : "No", mensaje: message },
-    `Hola, soy ${name}. ${attendance === "si" ? "¡Confirmo mi asistencia!" : "Lamentablemente no podré asistir."} ${message}`);
+  const ok = await send("asistencia", { nombre: name, asistencia: attendance === "si" ? "Sí" : "No", restricciones: dietary, mensaje: message },
+    `Hola, soy ${name}. ${attendance === "si" ? "¡Confirmo mi asistencia!" : "Lamentablemente no podré asistir."}${dietary ? ` Restricciones alimentarias: ${dietary}.` : ""} ${message}`);
   btn.disabled = false;
   if (!ok) { $("formNote").textContent = "No pudimos enviar tu respuesta ahora. La guardamos y se reenviará sola cuando recuperes la conexión."; return; }
   const yes = attendance === "si";
   $("doneTitle").textContent = yes ? "¡Gracias por confirmar!" : "Gracias por avisarnos";
   $("doneText").textContent = yes ? `${name}, nos vemos el 28 de noviembre. Estamos felices de compartir este día contigo.` : `${name}, te llevaremos en el corazón. Gracias por tu cariño.`;
-  form.reset(); $("formNote").textContent = "";
+  form.reset(); $("yesOnly").hidden = true; $("formNote").textContent = "";
   form.hidden = true; $("rsvpDone").hidden = false;
   $("rsvpDone").querySelector(".rings").classList.add("go");
 });
