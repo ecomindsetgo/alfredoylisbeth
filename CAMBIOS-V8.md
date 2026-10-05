@@ -39,3 +39,10 @@
 4. Colocar QR oficial de Yape.
 5. Colocar cuenta/CCI reales si desean mostrar transferencia bancaria.
 6. Volver a publicar la nueva versión de `google-apps-script.gs` para guardar restricciones alimentarias.
+
+## Ajustes posteriores — V9
+- Los botones de calendario ya no descargan un archivo `.ics`: abren directamente Google Calendar con el evento precargado.
+- Se eliminó la ficha visual “Fecha / Ciudad / Estilo / Celebración”.
+- Se reemplazó por un cierre editorial discreto en la sección de mensaje.
+- La tarjeta “Cuenta bancaria” vuelve a mostrarse siempre.
+- Si todavía no se han colocado números reales, “Nro. de cuenta” y “CCI” aparecen como “Por completar” en lugar de ocultarse o mostrar números ficticios.

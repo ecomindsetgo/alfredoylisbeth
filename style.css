@@ -249,3 +249,13 @@ button:disabled{opacity:.55;cursor:not-allowed}
   .berry,.spark{opacity:1}
   .tl .ph{clip-path:none}
 }
+
+/* V9 — mensaje más editorial y cuenta bancaria siempre visible */
+.message-signature{display:flex;align-items:center;justify-content:center;gap:1rem;margin:2rem auto 0;max-width:560px;color:var(--rose)}
+.message-signature span{height:1px;flex:1;max-width:72px;background:currentColor;opacity:.35}
+.message-signature em{font:italic 1.05rem var(--serif);letter-spacing:.015em;text-align:center}
+.fld.pending b{font-weight:400;font-style:italic;opacity:.72}
+@media (max-width:640px){
+  .message-signature{gap:.7rem;margin-top:1.6rem}
+  .message-signature em{font-size:.98rem}
+}

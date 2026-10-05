@@ -32,18 +32,13 @@ song.volume = .42;
 const guest = new URLSearchParams(location.search).get("para");
 if (guest) { $("forGuest").textContent = "Para " + guest; $("guestName").value = guest; $("songFrom").value = guest; }
 
-// ===== Guardar fecha (.ics) =====
-function icsEscape(v="") {
+// ===== Agregar directamente a Google Calendar =====
+function googleCalendarDate(v="") {
   return String(v)
-    .replace(/\\/g, "\\\\")
-    .replace(/\n/g, "\\n")
-    .replace(/;/g, "\\;")
-    .replace(/,/g, "\\,");
+    .replace(/([+-]\d{2}):?(\d{2})$/, "")
+    .replace(/[-:]/g, "");
 }
-function compactDateTime(v) {
-  return String(v).replace(/[-:]/g, "").replace(/([+-]\d\d):?(\d\d)$/, "");
-}
-function saveDate() {
+function openGoogleCalendar() {
   const C = CONFIG.calendario || {};
   const baseDate = C.fecha || "2026-11-28";
   const date = baseDate.replace(/-/g, "");
@@ -51,36 +46,23 @@ function saveDate() {
   next.setDate(next.getDate() + 1);
   const nextDate = `${next.getFullYear()}${String(next.getMonth()+1).padStart(2,"0")}${String(next.getDate()).padStart(2,"0")}`;
   const timed = Boolean(C.inicio && C.fin);
-  const lines = [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Alfredo y Lisbeth//Invitacion//ES",
-    "CALSCALE:GREGORIAN",
-    "METHOD:PUBLISH",
-    "BEGIN:VEVENT",
-    "UID:boda-alfredo-lisbeth-20261128@invitacion",
-    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")}`
-  ];
-  if (timed) lines.push(`DTSTART:${compactDateTime(C.inicio)}`, `DTEND:${compactDateTime(C.fin)}`);
-  else lines.push(`DTSTART;VALUE=DATE:${date}`, `DTEND;VALUE=DATE:${nextDate}`);
-  lines.push(
-    `SUMMARY:${icsEscape(C.titulo || "Boda Alfredo & Lisbeth")}`,
-    `LOCATION:${icsEscape(`${CONFIG.lugar}, ${CONFIG.direccion}`)}`,
-    `DESCRIPTION:${icsEscape("Celebramos nuestro sí contigo. Revisa la invitación para horarios y detalles actualizados.")}`,
-    "END:VEVENT",
-    "END:VCALENDAR"
-  );
-  const blob = new Blob([lines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "Alfredo-y-Lisbeth-28-11-2026.ics";
-  document.body.append(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  const dates = timed
+    ? `${googleCalendarDate(C.inicio)}/${googleCalendarDate(C.fin)}`
+    : `${date}/${nextDate}`;
+
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: C.titulo || "Boda Alfredo & Lisbeth",
+    dates,
+    details: "Celebramos nuestro sí contigo. Revisa la invitación para horarios y detalles actualizados.",
+    location: `${CONFIG.lugar}, ${CONFIG.direccion}`,
+    ctz: "America/Lima"
+  });
+
+  const url = `https://calendar.google.com/calendar/render?${params.toString()}`;
+  window.open(url, "_blank", "noopener,noreferrer");
 }
-["saveDateHero", "saveDateDock", "saveDatePlace"].forEach(id => $(id)?.addEventListener("click", saveDate));
+["saveDateHero", "saveDateDock", "saveDatePlace"].forEach(id => $(id)?.addEventListener("click", openGoogleCalendar));
 
 // ===== Ramas dibujadas con SVG (arco de apertura y esquinas del hero) =====
 const NS = "http://www.w3.org/2000/svg";
@@ -236,14 +218,22 @@ const c1 = el("div", "gcard"); c1.append(icon("heart"), el("h3", "", "Sugerencia
 const ul = el("ul", "glist"); R.sugerencias.forEach(t => ul.append(el("li", "", t))); c1.append(ul);
 const c2 = el("div", "gcard"); c2.append(icon("phone"), el("h3", "", "Yape / Plin"), el("p", "", "Si prefieres hacernos un aporte, puedes utilizar cualquiera de estas opciones."), wallet("Yape", R.yape), wallet("Plin", R.plin));
 const validBank = v => Boolean(v && !/^0[\d\s-]*$/.test(String(v).trim()));
-if (R.cuenta && validBank(R.cuenta.cuenta) && validBank(R.cuenta.cci)) {
-  const c3 = el("div", "gcard");
-  c3.append(icon("bank"), el("h3", "", "Cuenta bancaria"), el("p", "", R.cuenta.banco), field("Cuenta", R.cuenta.cuenta), field("CCI", R.cuenta.cci), el("span", "who", "A nombre de " + R.cuenta.titular));
-  G.append(c1, c2, c3);
-} else {
-  G.classList.add("two");
-  G.append(c1, c2);
+function bankField(label, value) {
+  if (validBank(value)) return field(label, value);
+  const f = el("div", "fld pending");
+  f.append(el("small", "", label), el("b", "", "Por completar"));
+  return f;
 }
+const c3 = el("div", "gcard");
+c3.append(
+  icon("bank"),
+  el("h3", "", "Cuenta bancaria"),
+  el("p", "", R.cuenta?.banco || "Banco por definir"),
+  bankField("Nro. de cuenta", R.cuenta?.cuenta),
+  bankField("CCI", R.cuenta?.cci),
+  el("span", "who", "A nombre de " + (R.cuenta?.titular || "Por definir"))
+);
+G.append(c1, c2, c3);
 
 // Cuenta regresiva
 const wedding = new Date(CONFIG.fecha);
