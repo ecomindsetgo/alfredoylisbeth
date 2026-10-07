@@ -26,3 +26,9 @@
 - Animación sutil al cambiar cada valor.
 - El contador se inicializa de forma independiente del resto de módulos.
 - Se resincroniza al volver a la pestaña y al restaurarse desde la caché de navegación del navegador.
+
+
+## V10.3 — Tipografía del contador
+- Se cambió exclusivamente la fuente de los números del contador a Montserrat 500.
+- El número 1 ahora tiene una lectura más limpia y convencional.
+- Se conserva el contador dinámico y su animación de cambio.
