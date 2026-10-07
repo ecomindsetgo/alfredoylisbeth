@@ -23,6 +23,48 @@
 
   const $ = id => document.getElementById(id);
   const $$ = sel => [...document.querySelectorAll(sel)];
+
+  // Cuenta regresiva independiente del resto de la invitación.
+  // Se reinicia al volver desde Google Calendar, Maps u otra pestaña,
+  // evitando que quede congelada por la caché de navegación del navegador.
+  const weddingDate = new Date(CONFIG.fecha);
+  let countdownTimer = null;
+
+  function updateCountdownValue(id, value) {
+    const node = $(id);
+    if (!node) return;
+    const next = String(value).padStart(2, "0");
+    if (node.textContent === next) return;
+    node.textContent = next;
+    node.classList.remove("is-changing");
+    void node.offsetWidth;
+    node.classList.add("is-changing");
+  }
+
+  function tickCountdown() {
+    if (Number.isNaN(weddingDate.getTime())) return;
+    const diff = Math.max(0, weddingDate.getTime() - Date.now());
+    updateCountdownValue("days", Math.floor(diff / 86400000));
+    updateCountdownValue("hours", Math.floor((diff % 86400000) / 3600000));
+    updateCountdownValue("minutes", Math.floor((diff % 3600000) / 60000));
+    updateCountdownValue("seconds", Math.floor((diff % 60000) / 1000));
+
+    const status = $("countdownStatus");
+    if (status && diff === 0) status.textContent = "Hoy celebramos nuestro sí.";
+  }
+
+  function startCountdown() {
+    if (countdownTimer) clearInterval(countdownTimer);
+    tickCountdown();
+    countdownTimer = setInterval(tickCountdown, 1000);
+  }
+
+  startCountdown();
+  addEventListener("pageshow", startCountdown);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) tickCountdown();
+  });
+
   const params = new URLSearchParams(location.search);
   const allowedThemes = new Set(["editorial", "botanico", "galeria"]);
   const requestedTheme = params.get("tema");
@@ -237,23 +279,6 @@
     target.replaceChildren(ideas, digital, bank);
   }
   renderGifts();
-
-  const wedding = new Date(CONFIG.fecha);
-  function tickCountdown() {
-    const now = new Date();
-    const diff = Math.max(0, wedding.getTime() - now.getTime());
-    const values = {
-      days: Math.floor(diff / 86400000),
-      hours: Math.floor((diff % 86400000) / 3600000),
-      minutes: Math.floor((diff % 3600000) / 60000),
-      seconds: Math.floor((diff % 60000) / 1000)
-    };
-    Object.entries(values).forEach(([key, value]) => { if ($(key)) $(key).textContent = String(value).padStart(2, "0"); });
-    if (diff === 0 && $("countdownStatus")) $("countdownStatus").textContent = "Hoy celebramos nuestro sí.";
-  }
-  tickCountdown();
-  const countdownTimer = setInterval(tickCountdown, 1000);
-  addEventListener("pagehide", () => clearInterval(countdownTimer), { once: true });
 
   function initReveal() {
     const nodes = $$(".reveal");

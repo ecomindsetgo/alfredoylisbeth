@@ -20,3 +20,9 @@
 - La fotografía familiar final quedó libre de texto superpuesto; el cierre ahora usa una composición dividida.
 - Se retiraron los textos visibles “Para ti” y “RSVP”.
 - La personalización por invitado conserva el nombre sin usar el encabezado “Para …”.
+
+## V10.2 — Contador dinámico
+- Nueva tipografía sans serif de estilo minimalista para días, horas, minutos y segundos.
+- Animación sutil al cambiar cada valor.
+- El contador se inicializa de forma independiente del resto de módulos.
+- Se resincroniza al volver a la pestaña y al restaurarse desde la caché de navegación del navegador.
