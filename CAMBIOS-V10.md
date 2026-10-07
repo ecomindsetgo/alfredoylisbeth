@@ -32,3 +32,15 @@
 - Se cambió exclusivamente la fuente de los números del contador a Montserrat 500.
 - El número 1 ahora tiene una lectura más limpia y convencional.
 - Se conserva el contador dinámico y su animación de cambio.
+
+## V10.4 — Adaptación móvil completa
+- Maquetación mobile-first revisada para 320–820 px.
+- Portada, hero, contador, evento, vestimenta, confirmación, historia, regalos, música, FAQ y cierre reorganizados para móvil.
+- Contador compacto en cuatro columnas y sin desbordes.
+- Tarjeta de fecha rediseñada horizontalmente en móvil.
+- Botones, inputs y select con alturas táctiles y fuente de 16 px para evitar zoom automático en iPhone.
+- Paleta de vestimenta mantiene los cinco colores visibles en una fila.
+- Galería de historia usa proporciones específicas por foto para evitar recortes incómodos.
+- Foto familiar final se muestra completa en móvil con `background-size: contain` y relación 3:4.
+- Dock inferior convertido en navegación móvil de tres accesos con soporte de safe-area.
+- Ajustes específicos para pantallas menores de 390 px.
